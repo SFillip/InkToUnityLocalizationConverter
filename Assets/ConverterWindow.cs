@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -25,14 +26,19 @@ public class ConverterWindow : EditorWindow
     private Story selectedStory;
     private TextAsset SelectedTextAsset;
 
+    private Vector2 scrollPos;
+
     public TextAsset SelectedStory
     {
-        set { selectedStory = new Story(value.text); SelectedTextAsset = value; Repaint(); }
+        set
+        {
+            try
+            {
+                selectedStory = new Story(value.text); SelectedTextAsset = value; Repaint();
+            }
+            catch (Exception) { }
+        }
     }
-
-
-
-
 
     [MenuItem("Window/ConverterWindow")]
     public static void ShowWindow()
@@ -45,8 +51,28 @@ public class ConverterWindow : EditorWindow
         GUILayout.BeginVertical();
         Selection = (StringTableCollection)EditorGUILayout.ObjectField(Selection, typeof(StringTableCollection), false);
 
+        GUIStyle headerStyle = new GUIStyle();
+        headerStyle.alignment = TextAnchor.MiddleCenter;
+        headerStyle.fontStyle = FontStyle.Bold;
+        headerStyle.normal.textColor = Color.white;
+
+        scrollPos = EditorGUILayout.BeginScrollView(scrollPos, false, true
+        , GUILayout.Width(200 + (200 * LocalizationEditorSettings.GetLocales().Count + 1))
+        , GUILayout.MaxHeight(100), GUILayout.Height(100));
+
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("KEY", headerStyle, GUILayout.Width(200));
+
+        foreach (var local in LocalizationEditorSettings.GetLocales())
+        {
+            GUILayout.Label(local.LocaleName, headerStyle, GUILayout.Width(200));
+        }
+
+        GUILayout.EndHorizontal();
+
         if (Selection is not null)
         {
+
             foreach (var v in Selection.GetRowEnumerator())
             {
                 GUILayout.BeginHorizontal();
@@ -54,42 +80,32 @@ public class ConverterWindow : EditorWindow
 
                 foreach (var entry in v.TableEntries)
                 {
-                    GUILayout.Space(5);
                     GUILayout.Label(entry.LocalizedValue);
                 }
                 GUILayout.EndHorizontal();
             }
+            EditorGUILayout.EndScrollView();
         }
         GUILayout.EndVertical();
         GUILayout.Space(50);
 
         SelectedStory = (TextAsset)EditorGUILayout.ObjectField(SelectedTextAsset, typeof(TextAsset), false);
-        if (selectedStory is not null)
+        if (selectedStory is not null && Selection is not null)
         {
+            GUILayout.BeginHorizontal();
+            EditorGUILayout.HelpBox($"Current index of the tag that schould be converted to the key is is: {InkConverterSettings.GetOrCreateInkConverterSettings().StandartKeyTagIndex}"
+                , MessageType.Info);
+
+            if (GUILayout.Button("Open Settings"))
+                SettingsService.OpenProjectSettings("Project/InkConverterSettingsProvider");
+
+            GUILayout.EndHorizontal();
+
             if (GUILayout.Button("Convert"))
             {
-                while (selectedStory.canContinue)
-                {
-                    string line = selectedStory.Continue();
-                    List<string> tags = selectedStory.currentTags;
-
-                    bool keyFound = false;
-                    foreach (var v in Selection.GetRowEnumerator())
-                    {
-                        if (v.KeyEntry.Key == tags[InkConverterSettings.GetOrCreateInkConverterSettings().StandartKeyTagIndex])
-                            keyFound = true;
-
-                        if (!keyFound)
-                        {
-                            foreach (var t in selection.Tables)
-                            {
-                                ((StringTable)t.asset).AddEntry(tags[InkConverterSettings.GetOrCreateInkConverterSettings().StandartKeyTagIndex], line);
-                            }
-                        }
-                    }
-
-
-                }
+                ConverterConfirmationDialog confirmationDialog = (ConverterConfirmationDialog)ScriptableObject.CreateInstance("ConverterConfirmationDialog");
+                confirmationDialog.Init(selectedStory, selection);
+                confirmationDialog.ShowWindow();
             }
         }
     }

@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0276c10643ae3b64baf655e969736388, type: 3}
   m_Name: ConverterSettings
   m_EditorClassIdentifier: 
-  StandartKeyTagIndex: 0
+  StandartKeyTagIndex: 1
   pathToStringTables: Localization/Tables

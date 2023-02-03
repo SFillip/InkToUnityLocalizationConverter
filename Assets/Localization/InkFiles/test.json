@@ -1,1 +1,1 @@
-﻿{"inkVersion":20,"root":[["^Hello ",{"#":"test"},{"#":"Hallo"},"\n","^Wie gehts ",{"#":"test2"},"\n","end",["done",{"#f":5,"#n":"g-0"}],null],"done",{"#f":1}],"listDefs":{}}
+﻿{"inkVersion":20,"root":[["^Hello ",{"#":"test"},{"#":"Hallo"},"\n","^Wie gehts ",{"#":"test2"},{"#":"hallo2"},"\n","^Ich hoffe es hat Funktioniert",{"#":"test3"},{"#":"hallo3"},"\n","end",["done",{"#f":5,"#n":"g-0"}],null],"done",{"#f":1}],"listDefs":{}}

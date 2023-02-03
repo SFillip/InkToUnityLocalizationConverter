@@ -38,7 +38,7 @@ static class InkConverterSettingsProvider{
 
     [SettingsProvider]
     public static SettingsProvider CreateInkConverterSettingsProvider(){
-        var provider=new SettingsProvider("Project/InkConverterSettingsProvider",SettingsScope.Project){
+        var provider=new SettingsProvider(" ",SettingsScope.Project){
             label="InkConverterSettings",
             guiHandler=(searchContext)=>
             {

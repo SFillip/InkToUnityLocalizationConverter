@@ -18,20 +18,34 @@ MonoBehaviour:
   m_Metadata:
     m_Items: []
   m_TableData:
-  - m_Id: 91976577978368
+  - m_Id: 5475355976667136
     m_Localized: a
     m_Metadata:
       m_Items: []
-  - m_Id: 95584593776640
+  - m_Id: 5476629417693186
+    m_Localized: 'Ich hoffe es hat Funktioniert
+
+'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5476629417693185
+    m_Localized: 'Wie gehts
+
+'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5476629417693184
     m_Localized: 'Hello
 
 '
     m_Metadata:
       m_Items: []
-  - m_Id: 102554042241024
-    m_Localized: 'Wie gehts
-
-'
+  - m_Id: 5478431798202368
+    m_Localized: a
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5478440866287616
+    m_Localized: a
     m_Metadata:
       m_Items: []
   references:
